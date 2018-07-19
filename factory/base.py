@@ -317,6 +317,10 @@ class FactoryOptions(object):
             return StubObject(**kwargs)
 
     def use_postgeneration_results(self, step, instance, results):
+        for k, v in results.items():
+            if hasattr(instance, k):
+                setattr(instance, k, v)
+
         self.factory._after_postgeneration(
             instance,
             create=step.builder.strategy == enums.CREATE_STRATEGY,
